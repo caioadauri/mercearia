@@ -1,6 +1,6 @@
 from datetime import datetime
 class Categoria:
-  def __init_(self, categoria):
+  def __init__(self, categoria):
     self.categoria = categoria
 
 class Produtos:
