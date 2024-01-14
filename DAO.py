@@ -2,7 +2,7 @@ from Models import *
 
 class DaoCategoria:
   @classmethod
-  def salvar(cls, categoria : Categoria):
+  def salvar(cls, categoria: Categoria):
     with open('categoria.txt', 'a') as arq:
       arq.writelines(categoria)
       arq.writelines('\n')
@@ -114,7 +114,7 @@ class DaoFuncionario:
 
   @classmethod
   def ler(cls):
-    with open('funcionario', 'r') as arq:
+    with open('funcionario.txt', 'r') as arq:
       cls.funcionarios = arq.readlines()
     
     cls.funcionarios = list(map(lambda x: x.replace('\n', ''), cls.funcionarios))
