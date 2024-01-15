@@ -1,6 +1,6 @@
 from datetime import datetime
 class Categoria:
-  def __init_(self, categoria):
+  def __init__(self, categoria):
     self.categoria = categoria
 
 class Produtos:
@@ -15,7 +15,7 @@ class Estoque:
     self.quantidade = quantidade
 
 class Venda:
-  def __init__(self, itensVendido: Produtos, vendedor, comprador, quantidadeVendida, data = datetime.now()):
+  def __init__(self, itensVendido: Produtos, vendedor, comprador, quantidadeVendida, data = datetime.now().strftime('%d/%m/%Y')):
     self.itensVendido = itensVendido
     self.vendedor = vendedor
     self.comprador = comprador
