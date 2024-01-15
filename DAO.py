@@ -19,6 +19,7 @@ class DaoCategoria:
       # print(i)
       # Validar se o código abaixo está correto
       cat.append(Categoria(i))
+    return cat
 
 
 class DaoVenda:
