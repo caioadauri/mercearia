@@ -60,3 +60,22 @@ class ControllerCategoria:
     else:
       for i in categorias:
         print(i.categoria)
+
+class ControllerEstoque:
+
+  def cadastrarProduto(nome, preco, categoria, quantidade):
+    x = DaoEstoque.ler()
+    y = DaoCategoria.ler()
+    h = list(filter(lambda x: x.categoria == categoria, y))
+    est = list(filter(lambda x: x.produto.nome == nome, x))
+
+    if len(h) > 0:
+      if len(est) == 0:
+        produto = Produtos(nome, preco, categoria)
+        DaoEstoque.salvar(produto, quantidade)
+        print('Produto cadastrado com sucesso!')
+      else:
+        print('Produto já cadastrado')
+    else:
+      print('Categoria não cadastrada')
+
