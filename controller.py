@@ -53,5 +53,47 @@ class ControllerCategoria:
         arq.writelines(i.categoria)
         arq.writelines('\n')
 
-a = ControllerCategoria()
-a.alterarCategoria('Carnes', 'Frutas')
+  def mostrarCategoria(self):
+    categorias = DaoCategoria.ler()
+    if len(categorias) == 0:
+      print('Nenhuma categoria cadastrada')
+    else:
+      for i in categorias:
+        print(i.categoria)
+
+class ControllerEstoque:
+
+  def cadastrarProduto(nome, preco, categoria, quantidade):
+    x = DaoEstoque.ler()
+    y = DaoCategoria.ler()
+    h = list(filter(lambda x: x.categoria == categoria, y))
+    est = list(filter(lambda x: x.produto.nome == nome, x))
+
+    if len(h) > 0:
+      if len(est) == 0:
+        produto = Produtos(nome, preco, categoria)
+        DaoEstoque.salvar(produto, quantidade)
+        print('Produto cadastrado com sucesso!')
+      else:
+        print('Produto já cadastrado')
+    else:
+      print('Categoria não cadastrada')
+
+  def removerProduto(nome):
+    x = DaoEstoque.ler()
+    est = list(filter(lambda x: x.produto.nome == nome, x))
+
+    if len(est) <= 0:
+      print('Produto não encontrado!')
+    else:
+      for i in range(len(x)):
+        if x[i].produto.nome == nome:
+          del x[i]
+          break
+      print('Produto removido com sucesso!')
+    
+    with open('estoque.txt', 'w') as arq:
+      for i in x:
+        arq.writelines(i.produto.nome + '|' + i.produto.preco + '|' + i.produto.categoria + '|' + i.quantidade)
+        arq.writelines('\n')
+

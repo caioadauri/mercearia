@@ -30,6 +30,7 @@ venda.txt
 fornecedor.txt
 pessoa.txt
 funcionario.txt
+estoque.txt
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
