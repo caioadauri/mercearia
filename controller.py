@@ -79,3 +79,21 @@ class ControllerEstoque:
     else:
       print('Categoria não cadastrada')
 
+  def removerProduto(nome):
+    x = DaoEstoque.ler()
+    est = list(filter(lambda x: x.produto.nome == nome, x))
+
+    if len(est) <= 0:
+      print('Produto não encontrado!')
+    else:
+      for i in range(len(x)):
+        if x[i].produto.nome == nome:
+          del x[i]
+          break
+      print('Produto removido com sucesso!')
+    
+    with open('estoque.txt', 'w') as arq:
+      for i in x:
+        arq.writelines(i.produto.nome + '|' + i.produto.preco + '|' + i.produto.categoria + '|' + i.quantidade)
+        arq.writelines('\n')
+
