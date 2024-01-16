@@ -16,8 +16,6 @@ class DaoCategoria:
 
     cat = []
     for i in cls.categoria:
-      # print(i)
-      # Validar se o código abaixo está correto
       cat.append(Categoria(i))
     return cat
 
