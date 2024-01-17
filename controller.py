@@ -120,3 +120,13 @@ class ControllerEstoque:
           arq.writelines('\n')
     else:
       print('Nova categoria não existente')
+
+  def mostrarEstoque(self):
+    estoque = DaoEstoque.ler()
+    if len(estoque) > 0:
+      for i in estoque:
+        print('=====================')
+        print(f'Nome: {i.produto.nome}  R$ {i.produto.preco},00  Categoria: {i.produto.categoria}  Quantidade: {i.quantidade}')
+    else:
+      print('Não existe produtos cadastrados')
+
