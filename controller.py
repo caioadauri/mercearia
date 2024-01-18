@@ -63,7 +63,7 @@ class ControllerCategoria:
 
 class ControllerEstoque:
 
-  def cadastrarProduto(nome, preco, categoria, quantidade):
+  def cadastrarProduto(self, nome, preco, categoria, quantidade):
     x = DaoEstoque.ler()
     y = DaoCategoria.ler()
     h = list(filter(lambda x: x.categoria == categoria, y))
@@ -153,22 +153,59 @@ class ControllerVenda:
             DaoVenda.salvar(vendido)
       temp.append([Produtos(i.produto.nome, i.produto.preco, i.produto.categoria), i.quantidade])
 
-      arq = open('estoque.txt', 'w')
-      arq.write('')
+    arq = open('estoque.txt', 'w')
+    arq.write('')
 
-      for i in temp:
-        with open('estoque.txt', 'a') as arq:
-          arq.writelines(i[0].nome + '|' + i[0].preco + '|' + i[0].categoria + '|' + str(i[1]))
-          arq.writelines('\n')
+    for i in temp:
+      with open('estoque.txt', 'a') as arq:
+        arq.writelines(i[0].nome + '|' + i[0].preco + '|' + i[0].categoria + '|' + str(i[1]))
+        arq.writelines('\n')
       
-      if existe == False:
-        print('O produto não existe')
-        return None
-      elif not quantidade:
-        print('A quantidade vendida não contém em estoque')
-      else:
-        print('Compra efetivada com sucesso')
-        return valorCompra
+    if existe == False:
+      print('O produto não existe')
+      return None
+    elif not quantidade:
+      print('A quantidade vendida não contém em estoque')
+      return None
+    else:
+      print('Compra efetivada com sucesso')
+      return valorCompra
 
+  def relatorioProdutos(self):
+    vendas = DaoVenda.ler()
+    produtos = []
+    if len(vendas) > 0:
+      for i in vendas:
+        nome = i.itensVendido.nome
+        quantidade = i.quantidadeVendida
+        tamanho = list(filter(lambda x: x['produto'] == nome, produtos))
+        if len(tamanho) > 0:
+          produtos = list(map(lambda x: {'produto': nome, 'quantidade': int(x['quantidade']) + int(quantidade) } if (x['produto'] == nome) else(x), produtos))
+        else:
+          produtos.append({'produto': nome, 'quantidade': int(quantidade)})
+    else:
+      print('não existe vendas')
+
+    ordenado = sorted(produtos, key = lambda k: k['quantidade'], reverse = True )
+
+    print('Esse é o relatório ordenado por quantidade')
+    a = 1
+    for i in ordenado:
+      print(f'=====Produto [{a}]=====')
+      print(f'produto: {i["produto"]}')
+      print(f'quantidade: {i["quantidade"]}\n')
+      a += 1
+
+  def mostrarVenda(self, dataInicio, dataFim):
+    pass
+
+a = ControllerEstoque()
+# a.cadastrarProduto('Maça', '15', 'Frutas', 30)
+      
+a = ControllerVenda()
+# a.cadastrarVenda('Maça', 'Caio', 'Caio Adauri', 6)
+
+# a = ControllerVenda()
+a.relatorioProdutos()
 
 
