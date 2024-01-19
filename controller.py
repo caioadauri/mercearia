@@ -197,15 +197,95 @@ class ControllerVenda:
       a += 1
 
   def mostrarVenda(self, dataInicio, dataFim):
-    pass
+    vendas = DaoVenda.ler()
+    dataInicio1 = datetime.strptime(dataInicio, '%d/%m/%Y')
+    dataFim1 = datetime.strptime(dataFim, '%d/%m/%Y')
 
-a = ControllerEstoque()
+    vendasSelecionadas = filter(lambda x: datetime.strptime(x.data, '%d/%m/%Y') >= dataInicio1 and datetime.strptime(x.data, '%d/%m/%Y') <= dataFim1, vendas)
+    
+    cont = 1
+    total = 0
+    for i in vendasSelecionadas:
+      print(f'=========={cont}==========')
+      print(f'Nome: {i.itensVendido.nome} \n'
+            f'Categoria: {i.itensVendido.categoria} \n'
+            f'Data: {i.data}'
+            f'Quantidade: {i.quantidadeVendida}'
+            f'Comprador: {i.comprador}'
+            f'Vendedor: {i.vendedor}')
+      total += int(i.itensVendido.preco) * int(i.quantidadeVendida)
+      cont += 1
+    print(f'Total vendido: {total}')
+
+class ControllerFornecedor:
+  def cadastrarFornecedor(nome, cnpj, telefone, categoria):
+    x = DaoFornecedor.ler()
+    listaCnpj = list(filter(lambda x: x.cnpj == cnpj, x))
+    listaTelefone = list(filter(lambda x: x.telefone == telefone, x))
+    if len(listaCnpj) > 0:
+      print('CNPJ já cadastrado')
+    elif len(listaTelefone) > 0:
+      print('Telefone já cadastrado')
+    else:
+      if len(cnpj) == 14 and len(telefone) >= 11:
+        DaoFornecedor.salvar(Fornecedor(nome, cnpj, telefone, categoria))
+        print('Fornecedor Cadastrado com Sucesso!')
+      else:
+        print('Digite um CNPJ ou telefone válido')
+    
+  def removerFornecedor(nomeRemover):
+    x = DaoFornecedor.ler()
+    forn = list(filter(lambda x: x.nome == nomeRemover, x))
+
+    if len(forn) <= 0:
+      print(f'Fornecedor {x} não existe!')
+    else:
+      for i in range(len(x)):
+        if x[i].nome == nomeRemover:
+          del x[i]
+          break
+      print('Fornecedor removido com sucesso!')
+
+      with open('fornecedor.txt', 'w') as arq:
+        for i in x:
+          arq.writelines(i.nome + '|' + i.cnpj +'|' + i.telefone + '|' + i.categoria) 
+          arq.writelines('\n')
+  
+  def alterarFornecedor( nomeAlterar, nomeAlterado, cnpjAlterado, telefoneAlterado, categoriaAlterado):
+    x = DaoFornecedor.ler()
+    forn = list(filter(lambda x: x.nome == nomeAlterar, x))
+
+    if len(forn) > 0:
+      forn1 = list(filter(lambda x: x.nome == nomeAlterado, x))
+      if len(forn1) == 0:
+        x = list(map(lambda x: Fornecedor(nomeAlterado, cnpjAlterado, telefoneAlterado, categoriaAlterado) if (x.nome == nomeAlterar) else(x), x))
+        print('Fornecedor alterado com Sucesso!')
+      else:
+        print('Fornecedor que dejesa alterar já existe')
+    else:
+      print('Fornecedor que deseja alterar não existe')
+
+    with open('fornecedor.txt', 'w') as arq:
+      for i in x:
+        arq.writelines(i.nome + '|' + i.cnpj + '|' + i.telefone + '|' + i.telefone + '|' + i.categoria)
+        arq.writelines('\n')
+
+a = ControllerFornecedor
+# a.alterarFornecedor('Caio Adauri', 'Caio Haritov', '12345678987654', '98765432112', 'Carnes')
+# a.removerFornecedor('Caio')
+# a.cadastrarFornecedor('Caio', '12345678912347', '12345678908', 'Frutas')
+
+
+# a = ControllerEstoque()
 # a.cadastrarProduto('Maça', '15', 'Frutas', 30)
       
-a = ControllerVenda()
+# a = ControllerVenda()
 # a.cadastrarVenda('Maça', 'Caio', 'Caio Adauri', 6)
 
 # a = ControllerVenda()
-a.relatorioProdutos()
+# a.relatorioProdutos()
+# a.mostrarVenda('17/01/2024', '18/01/2024')
+
+
 
 
